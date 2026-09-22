@@ -57,7 +57,7 @@ public class Library {
         members = newMembers;
         }
 
-        //Borrowing. Check if book exists/if borrowed, member exists/can borrow
+        //Borrowing book
         public boolean borrowBook(String isbn, int memberId) {
             for (int i = 0; i < bookCount; i++) {
                 if (books[i].isbn().equals(isbn)) {
@@ -80,9 +80,25 @@ public class Library {
                     }
                 }
             }
-
             return false;
         }
+
+        //returning book
+    public boolean returnBook(String isbn, int memberId) {
+        for (int i = 0; i < bookCount; i++) {
+            if (books[i].isbn().equals(isbn)) {
+                if (borrowedBy[i] != null) {
+                    if (borrowedBy[i].getId() == memberId) {
+                        borrowedBy[i].setActiveLoans(
+                                borrowedBy[i].getActiveLoans() - 1);
+                        borrowedBy[i] = null;
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
 
 
         }
