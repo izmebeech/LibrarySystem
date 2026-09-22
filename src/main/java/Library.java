@@ -18,7 +18,7 @@ public class Library {
         this.memberCount = 0;
         this.nextMemberId = 1;
     }
-    //add book
+    //add book + expander if array is full
     public void addBook(Book book) {
         if (bookCount == books.length) {
             expandBooks();
@@ -26,7 +26,6 @@ public class Library {
         books[bookCount] = book;
         bookCount++;
     }
-    //if array is full
     private void expandBooks() {
         Book[] newBooks = new Book[books.length * 2];
         Member[] newBorrowedBy = new Member[borrowedBy.length * 2];
@@ -38,7 +37,7 @@ public class Library {
         books = newBooks;
         borrowedBy = newBorrowedBy;
     }
-
+    //New member + expander if array is full
     public Member registerMember(String name) {
         if (memberCount == members.length) {
             expandMembers();
@@ -47,7 +46,6 @@ public class Library {
         members[memberCount] = member;
         memberCount++;
         nextMemberId++;
-
         return member;
     }
     private void expandMembers() {
@@ -58,4 +56,37 @@ public class Library {
         }
         members = newMembers;
         }
-    }
+
+        //Borrowing. Check if book exists/if borrowed, member exists/can borrow
+        public boolean borrowBook(String isbn, int memberId) {
+            for (int i = 0; i < bookCount; i++) {
+                if (books[i].isbn().equals(isbn)) {
+
+                    if (borrowedBy[i] != null) {
+                        return false;
+                    }
+
+                    for (int j = 0; j < memberCount; j++) {
+                        if (members[j].getId() == memberId) {
+
+                            if (members[j].canBorrowMoreBooks()) {
+                                borrowedBy[i] = members[j];
+                                members[j].setActiveLoans(
+                                        members[j].getActiveLoans() + 1
+                                );
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+
+            return false;
+        }
+
+
+        }
+
+
+
+    private Book[] books;
