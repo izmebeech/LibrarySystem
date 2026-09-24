@@ -57,6 +57,43 @@ public class Library {
         members = newMembers;
         }
 
+
+        //Show all books, sorted
+    public void showAllBooks(){
+        Book[] sort= new Book[bookCount];
+
+        for (int i = 0; i < bookCount; i++) {
+            sort[i] = books[i];
+        }
+        for (int i = 0; i < bookCount - 1; i++) {
+            for (int j = 0; j < bookCount - 1; j++) {
+                if (sort[j].title().compareTo(sort[j + 1].title()) > 0) {
+                    Book temporary = sort[j];
+                    sort[j] = sort[j + 1];
+                    sort[j + 1] = temporary;
+                    }
+                }
+            }
+        for (int i = 0; i < bookCount; i++) {
+            System.out.println(sort[i]);
+        }
+        }
+
+    }
+
+        //Search function for books via author or title
+        public void bookSearch(String searchTerm) {
+            for (int i = 0; i < bookCount; i++) {
+
+                if (books[i].title().toLowerCase().contains(searchTerm.toLowerCase())
+                        || books[i].author().toLowerCase().contains(searchTerm.toLowerCase())) {
+
+                    IO.println(books[i]);
+                }
+            }
+        }
+
+
         //Borrowing book
         public boolean borrowBook(String isbn, int memberId) {
             for (int i = 0; i < bookCount; i++) {
