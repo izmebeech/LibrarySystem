@@ -57,29 +57,64 @@ public class Library {
         members = newMembers;
         }
 
+        // Show all books, sorted
+        public void showAllBooks() {
+            Book[] sort = new Book[bookCount];
+            Member[] sortedBorrowedBy = new Member[bookCount];
 
-        //Show all books, sorted
-    public void showAllBooks(){
-        Book[] sort= new Book[bookCount];
+            for (int i = 0; i < bookCount; i++) {
+                sort[i] = books[i];
+                sortedBorrowedBy[i] = borrowedBy[i];
+            }
 
-        for (int i = 0; i < bookCount; i++) {
-            sort[i] = books[i];
-        }
-        for (int i = 0; i < bookCount - 1; i++) {
-            for (int j = 0; j < bookCount - 1; j++) {
-                if (sort[j].title().compareTo(sort[j + 1].title()) > 0) {
-                    Book temporary = sort[j];
-                    sort[j] = sort[j + 1];
-                    sort[j + 1] = temporary;
+            for (int i = 0; i < bookCount - 1; i++) {
+                for (int j = 0; j < bookCount - 1; j++) {
+                    if (sort[j].title().compareTo(sort[j + 1].title()) > 0) {
+
+                        Book temporary = sort[j];
+                        sort[j] = sort[j + 1];
+                        sort[j + 1] = temporary;
+
+                        Member temporaryMember = sortedBorrowedBy[j];
+                        sortedBorrowedBy[j] = sortedBorrowedBy[j + 1];
+                        sortedBorrowedBy[j + 1] = temporaryMember;
                     }
                 }
             }
-        for (int i = 0; i < bookCount; i++) {
-            System.out.println(sort[i]);
-        }
+            //Show which member currently loaned the books
+            for (int i = 0; i < bookCount; i++) {
+                IO.println(sort[i]);
+
+                if (sortedBorrowedBy[i] == null) {
+                    IO.println("Status: Tillgänglig");
+                } else {
+                    IO.println("Status: Utlånad till "
+                            + sortedBorrowedBy[i].getName()
+                            + " (medlems-ID: "
+                            + sortedBorrowedBy[i].getId() + ")");
+                }
+            }
         }
 
+        // Check if book exists in library
+        public boolean bookExists(String isbn) {
+            for (int i = 0; i < bookCount; i++) {
+                if (books[i].isbn().equals(isbn)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        // Check if book is already borrowed
+        public boolean bookIsBorrowed(String isbn) {
+            for (int i = 0; i < bookCount; i++) {
+                if (books[i].isbn().equals(isbn)) {
+                    return borrowedBy[i] != null;
+            }
+        }
+        return false;
     }
+
 
         //Search function for books via author or title
         public void bookSearch(String searchTerm) {
@@ -92,7 +127,6 @@ public class Library {
                 }
             }
         }
-
 
         //Borrowing book
         public boolean borrowBook(String isbn, int memberId) {
@@ -138,7 +172,7 @@ public class Library {
     }
 
 
-        }
+}
 
 
 
