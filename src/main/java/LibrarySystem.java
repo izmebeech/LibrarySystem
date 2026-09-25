@@ -34,37 +34,7 @@ public class LibrarySystem {
 
                 // main menu functions
                 case "1":
-                    IO.println("Ange titel:");
-                    String title = IO.readln();
-
-                    IO.println("Ange författare:");
-                    String author = IO.readln();
-
-                    IO.println("Ange ISBN:");
-                    String isbn = IO.readln();
-
-                    //Make sure every char in the input is a number
-                    boolean onlyNumbers = true;
-
-                    for (int i = 0; i < isbn.length(); i++) {
-                        if (!Character.isDigit(isbn.charAt(i))) {
-                            onlyNumbers = false;
-                            break;
-                        }
-                    }
-                    if (!onlyNumbers) {
-                        IO.println("ISBN får bara innehålla siffror.");
-                        break;
-                    }
-
-                    if (library.bookExists(isbn)) {
-                        IO.println("En bok med detta ISBN finns redan i registret.");
-                        break;
-                    }
-
-                    library.addBook(new Book(title, author, isbn));
-
-                    IO.println("Boken har lagts till.");
+                    addBook(library);
                     break;
 
                 case "2":
@@ -175,5 +145,39 @@ public class LibrarySystem {
             }
         }
 
+    }
+
+    private static void addBook(Library library) {
+        IO.println("Ange titel:");
+        String title = IO.readln();
+
+        IO.println("Ange författare:");
+        String author = IO.readln();
+
+        IO.println("Ange ISBN:");
+        String isbn = IO.readln();
+
+        //Make sure every char in the input is a number
+        boolean onlyNumbers = true;
+
+        for (int i = 0; i < isbn.length(); i++) {
+            if (!Character.isDigit(isbn.charAt(i))) {
+                onlyNumbers = false;
+                break;
+            }
+        }
+        if (!onlyNumbers) {
+            IO.println("ISBN får bara innehålla siffror.");
+            return;
+        }
+
+        if (library.bookExists(isbn)) {
+            IO.println("En bok med detta ISBN finns redan i registret.");
+            return;
+        }
+
+        library.addBook(new Book(title, author, isbn));
+
+        IO.println("Boken har lagts till.");
     }
 }
