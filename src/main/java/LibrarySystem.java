@@ -22,6 +22,7 @@ public class LibrarySystem {
             IO.println("4. Lämna tillbaka bok");
             IO.println("5. Sök bok");
             IO.println("6. Visa alla böcker och status");
+            IO.println("7. Utlåningsstatistik");
             IO.println("e. Avsluta");
 
             String choice = IO.readln();
@@ -152,8 +153,25 @@ public class LibrarySystem {
                     library.showAllBooks();
                     break;
 
+
+                case "7":
+                    Member memberWithMostLoans = library.memberWithMostLoans();
+
+                    if (memberWithMostLoans == null) {
+                        IO.println("Det finns inga utlånade böcker just nu.");
+                        break;
+                    }
+                    IO.println("Medlem med flest aktiva lån:");
+                    IO.println(memberWithMostLoans.getName()
+                            + " (medlems-ID: "
+                            + memberWithMostLoans.getId() + ")");
+                    IO.println("Antal aktiva lån: "
+                            + memberWithMostLoans.getActiveLoans());
+                    break;
+
                 default:
                     IO.println("Ogiltigt menyval.");
+                    break;
             }
         }
 

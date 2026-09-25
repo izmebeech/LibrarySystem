@@ -48,6 +48,7 @@ public class Library {
         nextMemberId++;
         return member;
     }
+
     private void expandMembers() {
         Member[] newMembers = new Member[members.length * 2];
 
@@ -96,15 +97,6 @@ public class Library {
             }
         }
 
-        // Check if book exists in library
-        public boolean bookExists(String isbn) {
-            for (int i = 0; i < bookCount; i++) {
-                if (books[i].isbn().equals(isbn)) {
-                    return true;
-                }
-            }
-            return false;
-        }
         //Check if member exists
         public boolean memberExists(int memberId) {
             for (int i = 0; i < memberCount; i++) {
@@ -112,6 +104,31 @@ public class Library {
                     return true;
                 }
             }
+            return false;
+        }
+
+        // Checks every registered member for who has the most loans.
+        public Member memberWithMostLoans() {
+            Member memberWithMostLoans = null;
+
+            for (int i = 0; i < memberCount; i++) {
+                if (members[i].getActiveLoans() > 0
+                        && (memberWithMostLoans == null
+                        || members[i].getActiveLoans() > memberWithMostLoans.getActiveLoans())) {
+                    memberWithMostLoans = members[i];
+                }
+            }
+
+            return memberWithMostLoans;
+        }
+
+        // Check if book exists in library
+        public boolean bookExists(String isbn) {
+            for (int i = 0; i < bookCount; i++) {
+                if (books[i].isbn().equals(isbn)) {
+                    return true;
+              }
+         }
             return false;
         }
 
@@ -124,7 +141,7 @@ public class Library {
             }
         }
         return false;
-    }
+        }
 
 
         //Search function for books via author or title
