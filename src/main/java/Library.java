@@ -105,6 +105,17 @@ public class Library {
             }
             return false;
         }
+        //Check if member exists
+        public boolean memberExists(int memberId) {
+            for (int i = 0; i < memberCount; i++) {
+                if (members[i].getId() == memberId) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+
         // Check if book is already borrowed
         public boolean bookIsBorrowed(String isbn) {
             for (int i = 0; i < bookCount; i++) {

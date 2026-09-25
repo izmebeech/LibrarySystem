@@ -84,15 +84,29 @@ public class LibrarySystem {
                         break;
                     }
 
+                    if (library.bookIsBorrowed(isbnToBorrow)) {
+                        IO.println("Boken är redan utlånad.");
+                        break;
+                    }
+
                     IO.println("Ange medlems-ID:");
-                    int memberIdToBorrow = Integer.parseInt(IO.readln());
+                    // Make sure program doesn't crash if user input = letters
+                    try {
+                        int memberIdToBorrow = Integer.parseInt(IO.readln());
+                        if (!library.memberExists(memberIdToBorrow)) {
+                            IO.println("Medlemmen hittades inte.");
+                            break;
+                        }
+                        boolean borrowed = library.borrowBook(isbnToBorrow, memberIdToBorrow);
 
-                    boolean borrowed = library.borrowBook(isbnToBorrow, memberIdToBorrow);
+                        if (borrowed) {
+                            IO.println("Boken lånad!");
+                        } else {
+                            IO.println("Kunde inte låna boken.");
+                        }
 
-                    if (borrowed) {
-                        IO.println("Boken lånad!");
-                    } else {
-                        IO.println("Kunde inte låna boken.");
+                    } catch (NumberFormatException e) {
+                        IO.println("Medlems-ID får bara innehålla siffror.");
                     }
                     break;
 
@@ -106,14 +120,24 @@ public class LibrarySystem {
                     }
 
                     IO.println("Ange medlems-ID:");
-                    int memberIdToReturn = Integer.parseInt(IO.readln());
 
-                    boolean returned = library.returnBook(isbnToReturn, memberIdToReturn);
+                    // make sure program doesn't crash if user input = letters
+                    try {
+                        int memberIdToReturn = Integer.parseInt(IO.readln());
+                        if (!library.memberExists(memberIdToReturn)) {
+                            IO.println("Medlemmen hittades inte.");
+                            break;
+                        }
 
-                    if (returned) {
-                        IO.println("Boken är tillbakalämnad.");
-                    } else {
-                        IO.println("Kunde inte lämna tillbaka boken.");
+                        boolean returned = library.returnBook(isbnToReturn, memberIdToReturn);
+
+                        if (returned) {
+                            IO.println("Boken är tillbakalämnad.");
+                        } else {
+                            IO.println("Kunde inte lämna tillbaka boken.");
+                        }
+                    } catch (NumberFormatException e) {
+                        IO.println("Medlems-ID får bara innehålla siffror.");
                     }
                     break;
 
@@ -132,7 +156,6 @@ public class LibrarySystem {
                     IO.println("Ogiltigt menyval.");
             }
         }
-
 
     }
 }
