@@ -1,5 +1,3 @@
-import java.util.Scanner;
-
 public class LibrarySystem {
     static void main() {
 
@@ -16,14 +14,14 @@ public class LibrarySystem {
         while (true) {
             IO.println("Bibliotekshanteraren");
             IO.println("====================");
-            IO.println("1. Lägg till bok");
-            IO.println("2. Registrera medlem");
-            IO.println("3. Låna bok");
-            IO.println("4. Lämna tillbaka bok");
-            IO.println("5. Sök bok");
-            IO.println("6. Visa alla böcker och status");
-            IO.println("7. Utlåningsstatistik");
-            IO.println("e. Avsluta");
+            IO.println("1. 📕 Lägg till bok");
+            IO.println("2. 👤 Registrera medlem");
+            IO.println("3. 📗 Låna bok");
+            IO.println("4. 📘 Lämna tillbaka bok");
+            IO.println("5. 🔍 Sök bok");
+            IO.println("6. 📚 Visa alla böcker och status");
+            IO.println("7. 🧾 Utlåningsstatistik");
+            IO.println("e. 🚪 Avsluta");
 
             String choice = IO.readln();
 
@@ -38,85 +36,19 @@ public class LibrarySystem {
                     break;
 
                 case "2":
-                    IO.println("Ange namn:");
-                    String name = IO.readln();
-
-                    Member member = library.registerMember(name);
-
-                    IO.println("Medlem registrerad. Ditt medlems-ID är:  " + member.getId());
+                    registerMember(library);
                     break;
 
                 case "3":
-                    IO.println("Ange ISBN:");
-                    String isbnToBorrow = IO.readln();
-
-                    if (!library.bookExists(isbnToBorrow)) {
-                        IO.println("Boken hittades inte.");
-                        break;
-                    }
-
-                    if (library.bookIsBorrowed(isbnToBorrow)) {
-                        IO.println("Boken är redan utlånad.");
-                        break;
-                    }
-
-                    IO.println("Ange medlems-ID:");
-                    // Make sure program doesn't crash if user input = letters
-                    try {
-                        int memberIdToBorrow = Integer.parseInt(IO.readln());
-                        if (!library.memberExists(memberIdToBorrow)) {
-                            IO.println("Medlemmen hittades inte.");
-                            break;
-                        }
-                        boolean borrowed = library.borrowBook(isbnToBorrow, memberIdToBorrow);
-
-                        if (borrowed) {
-                            IO.println("Boken lånad!");
-                        } else {
-                            IO.println("Kunde inte låna boken.");
-                        }
-
-                    } catch (NumberFormatException e) {
-                        IO.println("Medlems-ID får bara innehålla siffror.");
-                    }
+                    borrowBook(library);
                     break;
 
                 case "4":
-                    IO.println("Ange ISBN:");
-                    String isbnToReturn = IO.readln();
-
-                    if (!library.bookExists(isbnToReturn)) {
-                        IO.println("Boken hittades inte.");
-                        break;
-                    }
-
-                    IO.println("Ange medlems-ID:");
-
-                    // make sure program doesn't crash if user input = letters
-                    try {
-                        int memberIdToReturn = Integer.parseInt(IO.readln());
-                        if (!library.memberExists(memberIdToReturn)) {
-                            IO.println("Medlemmen hittades inte.");
-                            break;
-                        }
-
-                        boolean returned = library.returnBook(isbnToReturn, memberIdToReturn);
-
-                        if (returned) {
-                            IO.println("Boken är tillbakalämnad.");
-                        } else {
-                            IO.println("Kunde inte lämna tillbaka boken.");
-                        }
-                    } catch (NumberFormatException e) {
-                        IO.println("Medlems-ID får bara innehålla siffror.");
-                    }
+                    returnBook(library);
                     break;
 
                 case "5":
-                    IO.println("Ange titel eller författare:");
-                    String searchTerm = IO.readln();
-
-                    library.bookSearch(searchTerm);
+                    searchBook(library);
                     break;
 
                 case "6":
@@ -125,18 +57,7 @@ public class LibrarySystem {
 
 
                 case "7":
-                    Member memberWithMostLoans = library.memberWithMostLoans();
-
-                    if (memberWithMostLoans == null) {
-                        IO.println("Det finns inga utlånade böcker just nu.");
-                        break;
-                    }
-                    IO.println("Medlem med flest aktiva lån:");
-                    IO.println(memberWithMostLoans.getName()
-                            + " (medlems-ID: "
-                            + memberWithMostLoans.getId() + ")");
-                    IO.println("Antal aktiva lån: "
-                            + memberWithMostLoans.getActiveLoans());
+                    borrowingStatistics(library);
                     break;
 
                 default:
@@ -145,6 +66,102 @@ public class LibrarySystem {
             }
         }
 
+    }
+
+    private static void borrowingStatistics(Library library) {
+        Member memberWithMostLoans = library.memberWithMostLoans();
+
+        if (memberWithMostLoans == null) {
+            IO.println("Det finns inga utlånade böcker just nu.");
+            return;
+        }
+        IO.println("Medlem med flest aktiva lån:");
+        IO.println(memberWithMostLoans.getName()
+                + " (medlems-ID: "
+                + memberWithMostLoans.getId() + ")");
+        IO.println("Antal aktiva lån: "
+                + memberWithMostLoans.getActiveLoans());
+    }
+
+    private static void searchBook(Library library) {
+        IO.println("Ange titel eller författare:");
+        String searchTerm = IO.readln();
+
+        library.bookSearch(searchTerm);
+    }
+
+    private static void returnBook(Library library) {
+        IO.println("Ange ISBN:");
+        String isbnToReturn = IO.readln();
+
+        if (!library.bookExists(isbnToReturn)) {
+            IO.println("Boken hittades inte.");
+            return;
+        }
+
+        IO.println("Ange medlems-ID:");
+
+        // make sure program doesn't crash if user input not a number
+        try {
+            int memberIdToReturn = Integer.parseInt(IO.readln());
+            if (!library.memberExists(memberIdToReturn)) {
+                IO.println("Medlemmen hittades inte.");
+                return;
+            }
+
+            boolean returned = library.returnBook(isbnToReturn, memberIdToReturn);
+
+            if (returned) {
+                IO.println("Boken är tillbakalämnad.");
+            } else {
+                IO.println("Kunde inte lämna tillbaka boken.");
+            }
+        } catch (NumberFormatException e) {
+            IO.println("Medlems-ID får bara innehålla siffror.");
+        }
+    }
+
+    private static void borrowBook(Library library) {
+        IO.println("Ange ISBN:");
+        String isbnToBorrow = IO.readln();
+
+        if (!library.bookExists(isbnToBorrow)) {
+            IO.println("Boken hittades inte.");
+            return;
+        }
+
+        if (library.bookIsBorrowed(isbnToBorrow)) {
+            IO.println("Boken är redan utlånad.");
+            return;
+        }
+
+        IO.println("Ange medlems-ID:");
+        // Make sure program doesn't crash if user input = letters
+        try {
+            int memberIdToBorrow = Integer.parseInt(IO.readln());
+            if (!library.memberExists(memberIdToBorrow)) {
+                IO.println("Medlemmen hittades inte.");
+                return;
+            }
+            boolean borrowed = library.borrowBook(isbnToBorrow, memberIdToBorrow);
+
+            if (borrowed) {
+                IO.println("Boken lånad!");
+            } else {
+                IO.println("Kunde inte låna boken.");
+            }
+
+        } catch (NumberFormatException e) {
+            IO.println("Medlems-ID får bara innehålla siffror.");
+        }
+    }
+
+    private static void registerMember(Library library) {
+        IO.println("Ange namn:");
+        String name = IO.readln();
+        Member member = library.registerMember(name);
+
+        IO.println("Medlem registrerad. Ditt medlems-ID är:  " + member.getId());
     }
 
     private static void addBook(Library library) {
