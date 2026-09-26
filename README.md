@@ -107,7 +107,8 @@ Medlem kan inte låna fler än 5 böcker.
 Jag inser nu i efterhand att jag redan reflekterat ganska mycket i min README, så jag ska inte återupprepa mig, utan
 hoppas bara att du la märke till det. Något som jag däremot tänkt på är om jag skulle ha delat upp library mer, eller 
 sorterat det på ett mer läsvänligt sätt. Jag hade kanske lagt lite mer krut på estetiken av menyn och mina printlines.
-Gjort det lite mer roligt, utseendemässigt helt enkelt. 
+Gjort det lite mer roligt, utseendemässigt helt enkelt. Sen hade jag nog gjort menyn och all user interface på engelska
+istället, bara för hålla kodandet enhetligt, ibland glömde jag att jag använde svenska.
 
 Jag kanske direkt hade skapat metoder för mina cases, men samtidigt kändes det lärorikt att först skriva dem för att 
 sedan låta intellij extracta dem till en metod.
@@ -121,8 +122,16 @@ som en "lärare" - alltså skrivit tydliga promptar som ber den att INTE bara ge
 svaret själv.
 
 
-### Varför inte Collections?
-How `ArrayList`, `HashMap`, etc. would simplify the program.
+### Collections
+Om jag hade fått använda arrayList<Book> istället för Book[], så hade jag inte ens behövt ha en bookCount, eller en
+expandBooks() metod, eftersom arraylist redan håller koll på hur många objekt som finns samt expanderas automatiskt
+vid behov. Det hade blivit enklare att bara lägga till en bok, utan att behöva skriva en massa extra steg av kod.
+Likaså om Member hade fått vara en arraylist, så hade jag inte behövt en memberCount eller expandMembers().
 
-### Vad jag har lärt mig
-Your own reflection on the project.
+Om jag hade fått använda List.sort eller Collections.sort, så hade jag inte behövt skapa en temporär sort och
+sortedBorrowedBy bara för att sortera. Dessa sorteringsmetoder hade skött det automatiskt -> mindre kod.
+
+Eventuellt kunde jag ha använt en HashMap till att förenkla relationen mellan en bok och den som har lånat den. Att ett
+ISBN hade kunnat knytas direkt till den medlem som lånat den via en HashMap<String,Member>
+
+
