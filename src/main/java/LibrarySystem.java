@@ -209,25 +209,31 @@ public class LibrarySystem {
         IO.println("Ange ISBN:");
         String isbn = IO.readln();
 
-        //Make sure every char in the input is a number
-        boolean onlyNumbers = true;
+        while (!isbn.isEmpty()) {
 
-        for (int i = 0; i < isbn.length(); i++) {
-            if (!Character.isDigit(isbn.charAt(i))) {
-                onlyNumbers = false;
+            //Make sure every char in the input is a number
+            boolean onlyNumbers = true;
+
+            for (int i = 0; i < isbn.length(); i++) {
+                if (!Character.isDigit(isbn.charAt(i))) {
+                    onlyNumbers = false;
+                    break;
+                }
+            }
+
+            if (!onlyNumbers) {
+                IO.println("ISBN får bara innehålla siffror, försök igen");
+                isbn = IO.readln();
+            } else if (library.bookExists(isbn)) {
+                IO.println("En bok med detta ISBN finns redan i registret, försök igen.");
+                isbn = IO.readln();
+            } else {
                 break;
             }
         }
-        if (!onlyNumbers) {
-            IO.println("ISBN får bara innehålla siffror.");
+        if (isbn.isEmpty()) {
             return;
         }
-
-        if (library.bookExists(isbn)) {
-            IO.println("En bok med detta ISBN finns redan i registret.");
-            return;
-        }
-
         library.addBook(new Book(title, author, isbn));
 
         IO.println("Boken har lagts till.");

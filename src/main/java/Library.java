@@ -155,7 +155,11 @@ public class Library {
                 if (books[i].title().toLowerCase().contains(searchTerm.toLowerCase())
                         || books[i].author().toLowerCase().contains(searchTerm.toLowerCase())) {
 
-                    IO.println(books[i]);
+                    IO.println();
+                    IO.println("Titel: " + books[i].title());
+                    IO.println("Författare: " + books[i].author());
+                    IO.println("ISBN: " + books[i].isbn());
+                    IO.println();
                 }
             }
         }
