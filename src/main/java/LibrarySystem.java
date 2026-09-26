@@ -12,6 +12,7 @@ public class LibrarySystem {
 
 
         while (true) {
+            IO.println("====================");
             IO.println("Bibliotekshanteraren");
             IO.println("====================");
             IO.println("1. 📕 Lägg till bok");
@@ -21,16 +22,16 @@ public class LibrarySystem {
             IO.println("5. 🔍 Sök bok");
             IO.println("6. 📚 Visa alla böcker och status");
             IO.println("7. 🧾 Utlåningsstatistik");
+            IO.println("0. 🚪 Avsluta");
+            IO.println("🔙Tryck ENTER för att gå tillbaka i menyn");
             IO.println();
-            IO.println("e. 🚪 Avsluta");
-
+            IO.print("Välj ett alternativ: ");
             String choice = IO.readln();
 
-            if (choice.equals("e")) {
+            if (choice.equals("0")) {
                 break;
             }
             switch (choice) {
-
                 // main menu functions
                 case "1":
                     addBook(library);
@@ -90,6 +91,9 @@ public class LibrarySystem {
     private static void searchBook(Library library) {
         IO.println("Ange titel eller författare:");
         String searchTerm = IO.readln();
+        if (searchTerm.isEmpty()) {
+            return;
+        }
 
         library.bookSearch(searchTerm);
     }
@@ -98,6 +102,10 @@ public class LibrarySystem {
         IO.println();
         IO.println("Ange ISBN:");
         String isbnToReturn = IO.readln();
+
+        if (isbnToReturn.isEmpty()) {
+            return;
+        }
 
         if (!library.bookExists(isbnToReturn)) {
             IO.println("Boken hittades inte.");
@@ -136,6 +144,10 @@ public class LibrarySystem {
         IO.println("Ange ISBN:");
         String isbnToBorrow = IO.readln();
 
+        if (isbnToBorrow.isEmpty()) {
+            return;
+        }
+
         if (!library.bookExists(isbnToBorrow)) {
             IO.println("Boken hittades inte.");
             return;
@@ -144,12 +156,10 @@ public class LibrarySystem {
             IO.println("Boken är redan utlånad.");
             return;
         }
-
-        IO.println("Ange medlems-ID:");
+        IO.println("Ange ditt medlems-ID:");
 
         //make sure program doesn't crash if user input isn't a number
-        try {
-            int memberIdToBorrow = Integer.parseInt(IO.readln());
+        try {int memberIdToBorrow = Integer.parseInt(IO.readln());
 
             if (!library.memberExists(memberIdToBorrow)) {
                 IO.println("Medlemmen hittades inte.");
@@ -175,6 +185,10 @@ public class LibrarySystem {
         IO.println();
         IO.println("Ange namn:");
         String name = IO.readln();
+
+        if (name.isEmpty()) {
+            return;
+        }
         Member member = library.registerMember(name);
 
         IO.println();
@@ -185,6 +199,9 @@ public class LibrarySystem {
     private static void addBook(Library library) {
         IO.println("Ange titel:");
         String title = IO.readln();
+        if (title.isEmpty()) {
+            return;
+        }
 
         IO.println("Ange författare:");
         String author = IO.readln();

@@ -84,7 +84,9 @@ public class Library {
             }
             //Show which member currently loaned the books
             for (int i = 0; i < bookCount; i++) {
-                IO.println(sort[i]);
+                IO.println("Titel: " + sort[i].title());
+                IO.println("Författare: " + sort[i].author());
+                IO.println("ISBN: " + sort[i].isbn());
 
                 if (sortedBorrowedBy[i] == null) {
                     IO.println("Status: Tillgänglig");
@@ -94,6 +96,8 @@ public class Library {
                             + " (medlems-ID: "
                             + sortedBorrowedBy[i].getId() + ")");
                 }
+                //Add a space between each book in the sorted library
+                IO.println();
             }
         }
 
