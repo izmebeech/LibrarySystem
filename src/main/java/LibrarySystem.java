@@ -86,7 +86,11 @@ public class LibrarySystem {
         IO.println("Antal aktiva lån: "
                 + memberWithMostLoans.getActiveLoans());
         IO.println();
+
+        IO.println("Tryck ENTER för att gå tillbaka till menyn.");
+        IO.readln();
     }
+
 
     private static void searchBook(Library library) {
         IO.println("Ange titel eller författare:");
@@ -96,6 +100,10 @@ public class LibrarySystem {
         }
 
         library.bookSearch(searchTerm);
+        // prevent immediately looping back to main menu upon receiving results
+        IO.println();
+        IO.println("Tryck ENTER för att gå tillbaka till menyn.");
+        IO.readln();
     }
 
     private static void returnBook(Library library) {

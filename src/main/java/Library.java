@@ -99,6 +99,8 @@ public class Library {
                 //Add a space between each book in the sorted library
                 IO.println();
             }
+            IO.println("Tryck ENTER för att gå tillbaka till menyn.");
+            IO.readln();
         }
 
         //Check if member exists
